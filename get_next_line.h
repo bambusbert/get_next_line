@@ -5,19 +5,18 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 3
+#  define BUFFER_SIZE 1
 # endif
 
-char	*get_next_line(int fd);
-int	is_line_done(char *buf);
 size_t	ft_strlen(const char *str);
-size_t	ft_strlcat(char *dst, const char *src, size_t size);
 char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strdup(const char *s);
-int	ft_strchri(const char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2);
+
 void	*ft_calloc(size_t nmemb, size_t size);
 void	ft_bzero(void *s, size_t n);
-
+void	ft_strjoin_and_free(char **stash, char **read_buffer);
+char	*return_handler(char **stash);
+char	*get_next_line(int fd);
 #endif

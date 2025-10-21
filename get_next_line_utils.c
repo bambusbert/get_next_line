@@ -6,7 +6,7 @@
 /*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 15:39:05 by slambert          #+#    #+#             */
-/*   Updated: 2025/10/20 14:17:17 by slambert         ###   ########.fr       */
+/*   Updated: 2025/10/21 10:13:52 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,31 +22,6 @@ size_t	ft_strlen(const char *str)
 	while (str[i])
 		i++;
 	return (i);
-}
-
-size_t	ft_strlcat(char *dst, const char *src, size_t size)
-{
-	size_t	i;
-	size_t	x;
-	size_t	len;
-
-	i = 0;
-	x = 0;
-	len = 0;
-	while (dst[x])
-		x++;
-	len = x;
-	if (size <= ft_strlen(dst))
-		return (ft_strlen(src) + size);
-	while (i < size - len - 1 && src[i])
-	{
-		dst[x] = src[i];
-		x++;
-		i++;
-	}
-	if (i <= size - len - 1)
-		dst[x] = '\0';
-	return (ft_strlen(src) + len);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -68,24 +43,6 @@ char	*ft_strchr(const char *s, int c)
 	if ((unsigned char)s[i] == (unsigned char)c)
 		return ((char *)&s[i]);
 	return (p);
-}
-
-int ft_strchri(const char *s, int c)
-{
-	int		i;
-	
-	i = 0;
-	while (s[i])
-	{
-		if ((unsigned char)s[i] == (unsigned char)c)
-		{
-			return (i);
-		}
-		i++;
-	}
-	if ((unsigned char)s[i] == (unsigned char)c)
-		return (i);
-	return (0);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
