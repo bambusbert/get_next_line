@@ -4,22 +4,22 @@
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+        
 	+:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+      
+/*   By: slambert <slambert@student.42vienna.com>   +#+  +:+      
 	+#+        */
 /*                                                +#+#+#+#+#+  
 	+#+           */
-/*   Created: 2025/10/21 13:07:28 by slambert          #+#    #+#             */
-/*   Updated: 2025/10/21 13:07:28 by slambert         ###   ########.fr       */
+/*   Created: 2025/10/22 13:15:30 by slambert          #+#    #+#             */
+/*   Updated: 2025/10/22 13:15:30 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-//#include "get_next_line_utils.c"
-#include <fcntl.h>
-#include <stdio.h>
+// #include "get_next_line_utils.c"
+// #include <fcntl.h>
+// #include <stdio.h>
 
 
-void	ft_strjoin_and_free(char **stash, char **read_buffer);
+void	ft_strjoin_and_free(char **read_buffer, char **stash);
 char	*return_handler(char **stash);
 void	free_read_buffer_and_stash(char **read_buffer, char **stash);
 char	*extract_stuff_after_newline(char **stash, char *newline_pointer);
@@ -30,9 +30,11 @@ char	*get_next_line(int fd)
 	char *read_buffer;
 	int read_bytes;
 
-	if (fd < 0 || BUFFER_SIZE < 0)
+	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
 	read_buffer = malloc(BUFFER_SIZE + 1);
+	if (!read_buffer)
+		return (NULL);
 	while (1)
 	{
 		read_bytes = read(fd, read_buffer, BUFFER_SIZE);
@@ -45,7 +47,7 @@ char	*get_next_line(int fd)
 		read_buffer[read_bytes] = '\0';
 		if (read_bytes == 0)
 			break ;
-		ft_strjoin_and_free(&stash, &read_buffer);
+		ft_strjoin_and_free(&read_buffer, &stash);
 		if (ft_strchr(stash, '\n'))
 			break ;
 	}
@@ -59,7 +61,7 @@ void	free_read_buffer_and_stash(char **read_buffer, char **stash)
 	free(*stash);
 }
 
-void	ft_strjoin_and_free(char **stash, char **read_buffer)
+void	ft_strjoin_and_free(char **read_buffer, char **stash)
 {
 	char *temp;
 
@@ -85,6 +87,7 @@ char	*return_handler(char **stash)
 	{
 		line_to_ret = ft_substr(*stash, 0, (newline_pointer - *stash) + 1);
 		temp = extract_stuff_after_newline(stash, newline_pointer);
+		// if !temp: free everything and return NULL
 		free(*stash);
 		*stash = temp;
 		return (line_to_ret);
@@ -110,12 +113,15 @@ int	main(void)
 	char *p;
 
 	fd = open("test.txt", O_RDONLY);
+	// fd = open("gnl_edge_cases.txt", O_RDONLY);
+	// fd = open("empty.txt", O_RDONLY);
+	// fd = open("newline.txt", O_RDONLY);
 	while (1)
 	{
 		p = get_next_line(fd);
 		if (!p)
 			break ;
-		printf("Line %d: %s\n", i, p);
+		printf("Line %d: '%s'", i + 1, p);
 		free(p);
 		i++;
 	}

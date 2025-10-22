@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 15:39:05 by slambert          #+#    #+#             */
-/*   Updated: 2025/10/21 10:13:52 by slambert         ###   ########.fr       */
+/*   Updated: 2025/10/22 13:25:19 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlen(const char *str)
 	int	i;
 
 	if (!str)
-		return 0;
+		return (0);
 	i = 0;
 	while (str[i])
 		i++;
@@ -29,6 +29,8 @@ char	*ft_strchr(const char *s, int c)
 	int		i;
 	char	*p;
 
+	if (!s)
+		return (NULL);
 	p = NULL;
 	i = 0;
 	while (s[i])
@@ -101,7 +103,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (ft_strjoin("", s2));
 	if (!s2)
 		return (ft_strjoin(s1, ""));
-	p = ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, 1);
+	p = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!p)
 		return (NULL);
 	i = 0;
@@ -115,42 +117,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		i++;
 		j++;
 	}
+	p[i] = 0;
 	return (p);
-}
-
-void	*ft_calloc(size_t nmemb, size_t size)
-{
-	void	*ptr;
-	size_t	total;
-
-	if (nmemb == 0 || size == 0)
-	{
-		ptr = malloc(1);
-		if (!ptr)
-			return (NULL);
-		ft_bzero(ptr, 1);
-		return (ptr);
-	}
-	total = nmemb * size;
-	if (total / size != nmemb)
-		return (NULL);
-	ptr = malloc(total);
-	if (!ptr)
-		return (NULL);
-	ft_bzero(ptr, total);
-	return (ptr);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	unsigned char	*p;
-	size_t			i;
-
-	p = (unsigned char *)s;
-	i = 0;
-	while (i < n)
-	{
-		p[i] = 0;
-		i++;
-	}
 }
