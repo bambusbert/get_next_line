@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+        
+/*                                                    +:+ +:+
 	+:+     */
-/*   By: slambert <slambert@student.42vienna.com>   +#+  +:+      
+/*   By: slambert <slambert@student.42vienna.com>   +#+  +:+
 	+#+        */
-/*                                                +#+#+#+#+#+  
+/*                                                +#+#+#+#+#+
 	+#+           */
 /*   Created: 2025/10/22 13:15:30 by slambert          #+#    #+#             */
 /*   Updated: 2025/10/22 13:15:30 by slambert         ###   ########.fr       */
@@ -14,15 +14,16 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-// #include "get_next_line_utils.c"
-// #include <fcntl.h>
-// #include <stdio.h>
+/* #include "get_next_line_utils.c"
+#include <fcntl.h>
+#include <stdio.h> */
 
 
 void	ft_strjoin_and_free(char **read_buffer, char **stash);
 char	*return_handler(char **stash);
 void	free_read_buffer_and_stash(char **read_buffer, char **stash);
-char	*extract_stuff_after_newline(char **stash, char *newline_pointer);
+char	*do_stuff_when_newline(char **line_to_ret, char ***stash,
+		char **newline_pointer, char **temp);
 
 char	*get_next_line(int fd)
 {
@@ -84,14 +85,8 @@ char	*return_handler(char **stash)
 	}
 	newline_pointer = ft_strchr(*stash, '\n');
 	if (newline_pointer)
-	{
-		line_to_ret = ft_substr(*stash, 0, (newline_pointer - *stash) + 1);
-		temp = extract_stuff_after_newline(stash, newline_pointer);
-		// if !temp: free everything and return NULL
-		free(*stash);
-		*stash = temp;
-		return (line_to_ret);
-	}
+		return (do_stuff_when_newline(&line_to_ret, &stash, &newline_pointer,
+				&temp));
 	else
 	{
 		line_to_ret = *stash;
@@ -100,10 +95,23 @@ char	*return_handler(char **stash)
 	}
 }
 
-char	*extract_stuff_after_newline(char **stash, char *newline_pointer)
+/* helper function that splits the stash and returns the characters up to \0 (the line to be returned).
+the remainder (stuff after \n) will get stored in the static variable stash 
+TODO rename*/
+char	*do_stuff_when_newline(char **line_to_ret, char ***stash,
+		char **newline_pointer, char **temp)
 {
-	return (ft_substr(*stash, (newline_pointer - *stash) + 1, ft_strlen(*stash)
-			- ((newline_pointer - *stash) + 1)));
+	*line_to_ret = ft_substr(**stash, 0, (*newline_pointer - **stash) + 1);
+	*temp = ft_substr(**stash, (*newline_pointer - **stash) + 1,
+			ft_strlen(**stash) - ((*newline_pointer - **stash) + 1));
+	if (!*temp)
+	{
+		free(*line_to_ret);
+		return (NULL);
+	}
+	free(**stash);
+	**stash = *temp;
+	return (*line_to_ret);
 }
 /* 
 int	main(void)

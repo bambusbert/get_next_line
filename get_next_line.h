@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com>   +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: slambert <slambert@student.42vienna.com>   +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2025/10/22 13:13:53 by slambert          #+#    #+#             */
 /*   Updated: 2025/10/22 13:13:53 by slambert         ###   ########.fr       */
 /*                                                                            */
@@ -30,6 +33,6 @@ char	*get_next_line(int fd);
 void	free_read_buffer_and_stash(char **read_buffer, char **stash);
 void	ft_strjoin_and_free(char **read_buffer, char **stash);
 char	*return_handler(char **stash);
-char	*extract_stuff_after_newline(char **stash, char *newline_pointer);
+char	*do_stuff_when_newline(char **line_to_ret, char ***stash, char **newline_pointer, char **temp);
 
 #endif
