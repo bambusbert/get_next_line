@@ -28,11 +28,6 @@ char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strdup(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
-
 char	*get_next_line(int fd);
-void	free_read_buffer_and_stash(char **read_buffer, char **stash);
-void	ft_strjoin_and_free(char **read_buffer, char **stash);
-char	*return_handler(char **stash);
-char	*do_stuff_when_newline(char **line_to_ret, char ***stash, char **newline_pointer, char **temp);
 
 #endif

@@ -19,11 +19,11 @@
 #include <stdio.h> */
 
 
-void	ft_strjoin_and_free(char **read_buffer, char **stash);
-char	*return_handler(char **stash);
-void	free_read_buffer_and_stash(char **read_buffer, char **stash);
-char	*do_stuff_when_newline(char **line_to_ret, char ***stash,
-		char **newline_pointer, char **temp);
+static void	ft_strjoin_and_free(char **read_buffer, char **stash);
+static char	*return_handler(char **stash);
+static char	*free_read_buffer_and_stash(char **read_buffer, char **stash);
+static char	*extract_line_and_remainder(char **line_to_ret, char **stash,
+		char *newline_pointer, char **temp);
 
 char	*get_next_line(int fd)
 {
@@ -40,15 +40,13 @@ char	*get_next_line(int fd)
 	{
 		read_bytes = read(fd, read_buffer, BUFFER_SIZE);
 		if (read_bytes < 0)
-		{
-			free_read_buffer_and_stash(&read_buffer, &stash);
-			stash = NULL;
-			return (NULL);
-		}
+			return (free_read_buffer_and_stash(&read_buffer, &stash));
 		read_buffer[read_bytes] = '\0';
 		if (read_bytes == 0)
 			break ;
 		ft_strjoin_and_free(&read_buffer, &stash);
+		if (!stash)
+			return (free(read_buffer), NULL);
 		if (ft_strchr(stash, '\n'))
 			break ;
 	}
@@ -56,22 +54,32 @@ char	*get_next_line(int fd)
 	return (return_handler(&stash));
 }
 
-void	free_read_buffer_and_stash(char **read_buffer, char **stash)
+static char	*free_read_buffer_and_stash(char **read_buffer, char **stash)
 {
 	free(*read_buffer);
-	free(*stash);
+	if (*stash)
+	{
+		free(*stash);
+		*stash = NULL;
+	}
+	return (NULL);
 }
 
-void	ft_strjoin_and_free(char **read_buffer, char **stash)
+static void	ft_strjoin_and_free(char **read_buffer, char **stash)
 {
 	char *temp;
 
 	temp = ft_strjoin(*stash, *read_buffer);
 	free(*stash);
+	if (!temp)
+	{
+		*stash = NULL;
+		return ;
+	}
 	*stash = temp;
 }
 
-char	*return_handler(char **stash)
+static char	*return_handler(char **stash)
 {
 	char *newline_pointer;
 	char *line_to_ret;
@@ -84,36 +92,38 @@ char	*return_handler(char **stash)
 		return (NULL);
 	}
 	newline_pointer = ft_strchr(*stash, '\n');
-	if (newline_pointer)
-		return (do_stuff_when_newline(&line_to_ret, &stash, &newline_pointer,
-				&temp));
-	else
+	if (!newline_pointer)
 	{
 		line_to_ret = *stash;
 		*stash = NULL;
+		free(*stash);
 		return (line_to_ret);
 	}
+	return (extract_line_and_remainder(&line_to_ret, stash, newline_pointer,
+			&temp));
 }
 
-/* helper function that splits the stash and returns the characters up to \0 (the line to be returned).
-the remainder (stuff after \n) will get stored in the static variable stash 
+/* helper function that splits the stash and returns the characters up to \n (the line to be returned).
+the remainder (stuff after \n) will get stored in the static variable stash
 TODO rename*/
-char	*do_stuff_when_newline(char **line_to_ret, char ***stash,
-		char **newline_pointer, char **temp)
+static char	*extract_line_and_remainder(char **line_to_ret, char **stash,
+		char *newline_pointer, char **temp)
 {
-	*line_to_ret = ft_substr(**stash, 0, (*newline_pointer - **stash) + 1);
-	*temp = ft_substr(**stash, (*newline_pointer - **stash) + 1,
-			ft_strlen(**stash) - ((*newline_pointer - **stash) + 1));
+	*line_to_ret = ft_substr(*stash, 0, (newline_pointer - *stash) + 1);
+	if (!*line_to_ret)
+		return (NULL);
+	*temp = ft_substr(*stash, (newline_pointer - *stash) + 1, ft_strlen(*stash)
+			- (newline_pointer - *stash + 1));
 	if (!*temp)
 	{
 		free(*line_to_ret);
 		return (NULL);
 	}
-	free(**stash);
-	**stash = *temp;
+	free(*stash);
+	*stash = *temp;
 	return (*line_to_ret);
 }
-/* 
+/*
 int	main(void)
 {
 	int i = 0;
@@ -123,7 +133,7 @@ int	main(void)
 	fd = open("test.txt", O_RDONLY);
 	// fd = open("gnl_edge_cases.txt", O_RDONLY);
 	// fd = open("empty.txt", O_RDONLY);
-	// fd = open("newline.txt", O_RDONLY);
+	//fd = open("newline.txt", O_RDONLY);
 	while (1)
 	{
 		p = get_next_line(fd);

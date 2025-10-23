@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42vienna.com>   +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 15:39:05 by slambert          #+#    #+#             */
-/*   Updated: 2025/10/22 13:25:19 by slambert         ###   ########.fr       */
+/*   Updated: 2025/10/23 11:32:53 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	j;
 
 	if (!s1)
-		return (ft_strjoin("", s2));
+		s1 = "";
 	if (!s2)
-		return (ft_strjoin(s1, ""));
+		s2 = "";
 	p = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!p)
 		return (NULL);
