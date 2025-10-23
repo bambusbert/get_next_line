@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slambert <slambert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/19 15:39:05 by slambert          #+#    #+#             */
-/*   Updated: 2025/10/23 11:32:53 by slambert         ###   ########.fr       */
+/*   Created: 2025/10/23 17:21:05 by slambert          #+#    #+#             */
+/*   Updated: 2025/10/23 17:21:06 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

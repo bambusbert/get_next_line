@@ -2,14 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+
-	+:+     */
-/*   By: slambert <slambert@student.42vienna.com>   +#+  +:+
-	+#+        */
-/*                                                +#+#+#+#+#+
-	+#+           */
-/*   Created: 2025/10/22 13:15:30 by slambert          #+#    #+#             */
-/*   Updated: 2025/10/22 13:15:30 by slambert         ###   ########.fr       */
+/*                                                    +:+ +:+         +:+     */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/23 17:21:16 by slambert          #+#    #+#             */
+/*   Updated: 2025/10/23 17:21:16 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +15,17 @@
 #include <fcntl.h>
 #include <stdio.h> */
 
-
 static void	ft_strjoin_and_free(char **read_buffer, char **stash);
 static char	*return_handler(char **stash);
 static char	*free_read_buffer_and_stash(char **read_buffer, char **stash);
 static char	*extract_line_and_remainder(char **line_to_ret, char **stash,
-		char *newline_pointer, char **temp);
+				char *newline_pointer, char **temp);
 
 char	*get_next_line(int fd)
 {
-	static char *stash;
-	char *read_buffer;
-	int read_bytes;
+	static char	*stash;
+	char		*read_buffer;
+	ssize_t		read_bytes;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
@@ -65,9 +61,11 @@ static char	*free_read_buffer_and_stash(char **read_buffer, char **stash)
 	return (NULL);
 }
 
+/* takes the buffer and the stash and stringjoins them.
+this string is stored in the static stash */
 static void	ft_strjoin_and_free(char **read_buffer, char **stash)
 {
-	char *temp;
+	char	*temp;
 
 	temp = ft_strjoin(*stash, *read_buffer);
 	free(*stash);
@@ -79,11 +77,13 @@ static void	ft_strjoin_and_free(char **read_buffer, char **stash)
 	*stash = temp;
 }
 
+/* sets the newline_pointer and calls extract_line_and_remainder
+including safety checks */
 static char	*return_handler(char **stash)
 {
-	char *newline_pointer;
-	char *line_to_ret;
-	char *temp;
+	char	*newline_pointer;
+	char	*line_to_ret;
+	char	*temp;
 
 	if (!(*stash) || (*stash)[0] == '\0')
 	{
@@ -96,16 +96,15 @@ static char	*return_handler(char **stash)
 	{
 		line_to_ret = *stash;
 		*stash = NULL;
-		free(*stash);
 		return (line_to_ret);
 	}
 	return (extract_line_and_remainder(&line_to_ret, stash, newline_pointer,
 			&temp));
 }
 
-/* helper function that splits the stash and returns the characters up to \n (the line to be returned).
-the remainder (stuff after \n) will get stored in the static variable stash
-TODO rename*/
+/* helper function that splits the stash and returns the characters up to \n
+(the line to be returned). the remainder (stuff after \n) will get stored in
+the static variable stash*/
 static char	*extract_line_and_remainder(char **line_to_ret, char **stash,
 		char *newline_pointer, char **temp)
 {
@@ -117,12 +116,14 @@ static char	*extract_line_and_remainder(char **line_to_ret, char **stash,
 	if (!*temp)
 	{
 		free(*line_to_ret);
+		free(*stash);
 		return (NULL);
 	}
 	free(*stash);
 	*stash = *temp;
 	return (*line_to_ret);
 }
+
 /*
 int	main(void)
 {
@@ -130,9 +131,10 @@ int	main(void)
 	int fd;
 	char *p;
 
-	fd = open("test.txt", O_RDONLY);
-	// fd = open("gnl_edge_cases.txt", O_RDONLY);
-	// fd = open("empty.txt", O_RDONLY);
+	//fd = open();
+	//fd = open("test.txt", O_RDONLY);
+	//fd = open("gnl_edge_cases.txt", O_RDONLY);
+		fd = open("empty.txt", O_RDONLY);
 	//fd = open("newline.txt", O_RDONLY);
 	while (1)
 	{

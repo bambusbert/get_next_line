@@ -2,5 +2,7 @@
     "files.associations": {
         "stdio.h": "c",
         "fcntl.h": "c"
-    }
+    },
+    "42header.username": "slambert",
+    "42header.email": "slambert@student.42vienna.com"
 }

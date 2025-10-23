@@ -2,14 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+        
-	+:+     */
-/*   By: slambert <slambert@student.42vienna.com>   +#+  +:+      
-	+#+        */
-/*                                                +#+#+#+#+#+  
-	+#+           */
-/*   Created: 2025/10/22 13:13:53 by slambert          #+#    #+#             */
-/*   Updated: 2025/10/22 13:13:53 by slambert         ###   ########.fr       */
+/*                                                    +:+ +:+         +:+     */
+/*   By: slambert <slambert@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/23 17:21:21 by slambert          #+#    #+#             */
+/*   Updated: 2025/10/23 17:21:21 by slambert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +17,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 1
 # endif
 
 size_t	ft_strlen(const char *str);
