@@ -124,7 +124,7 @@ static char	*extract_line_and_remainder(char **line_to_ret, char **stash,
 	return (*line_to_ret);
 }
 
-/*
+/* 
 int	main(void)
 {
 	int i = 0;
